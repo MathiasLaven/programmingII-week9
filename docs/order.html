@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      .html {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .order-button {
+        background-color: white;
+        margin: 8px;
+        border-radius: 3px;
+        padding: 8px 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: opacity 0.5s;
+      }
+      .order-button:hover {
+        opacity: 0.8;
+      }
+      .order-button:active {
+        opacity: 0.5;
+      }
+
+      .total-button {
+          background-color: rgb(55, 146, 99);
+      }
+      .reset-button {
+        background-color: rgb(216, 59, 59);
+      }
+
+      /*source: https://gradientbuttons.colorion.co/*/
+      .nonnas-pie-button {
+          background-image: linear-gradient(to right, #666600 0%, #999966  51%, #666600  100%);
+          text-align: center;
+          transition: 0.5s;
+          background-size: 200% auto;
+          color: white;            
+          box-shadow: 0 0 20px #eee;
+      }
+      .nonnas-pie-button:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .order-page {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+      }
+      .order-section {
+        border: black 5px solid;
+        margin: 5px 10px;
+        margin-bottom: 50px;
+      }
+      .order-columns {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+      }
+
+      @media (max-width: 750px) {
+        .order-page {
+            grid-template-columns: 1fr;
+        }
+      }
+
+
+      .order-item {
+        font-weight: bold;
+        font-size: large;
+        margin: 5px 10px;
+        line-height: 30px
+      }
+      .order-money {
+        text-align: right;
+        margin-right: 25%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="order-page">
+      <div>
+          <section>
+            <h1>Choose your Pizza</h1>
+            <p>
+              Nonna's Sunday Pie is <strong>35% OFF</strong> today only! Enjoy the fresh mozzarella and basil in every bite.
+            </p>
+          </section>
+
+          <script>
+            const taxRate = 15;
+            const nonnasPieDiscount = 0.35;
+            
+            let orderTotal = 0;
+            let taxTotal = 0;
+            let finalTotal = 0;
+
+            function addToOrder(orderName, priceTimes100) {
+                orderTotal += priceTimes100;
+                taxTotal = Math.floor((orderTotal * taxRate) / 100);
+                finalTotal = orderTotal + taxTotal;
+                console.log(`1x ${orderName} ordered, current total: $${orderTotal / 100}`);
+
+                if (document.getElementById('order-contents').innerHTML.trim() === "No contents! <br>") {
+                  document.getElementById('order-contents').innerHTML = "";
+                  document.getElementById('order-money').innerHTML = "";
+                };
+
+                document.getElementById('order-contents').innerHTML += `${orderName} <br>`;
+                document.getElementById('order-money').innerHTML += `$${priceTimes100 / 100} <br>`;
+
+                document.getElementById('total-and-tax-money').innerHTML = `$${orderTotal / 100}\n$${taxTotal / 100}`;
+                document.getElementById('final-total-money').innerHTML = `$${finalTotal / 100}`;
+            }
+          </script>
+
+          <hr>
+
+          <main>
+            <section>
+              <h2>Pizzas</h2>
+              <button class="order-button" onclick="addToOrder('Classic Pizza', 1699)">
+                Classic Pizza ($16.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Meat-Lover\'s', 1999)">
+                Meat-Lover's ($19.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Garden Delight', 1999)">
+                Garden Delight ($19.99)
+              </button>
+
+              <button class="nonnas-pie-button order-button" onclick="addToOrder('Nonna\'s Sunday Pie', Math.floor(2799 * (1 - nonnasPieDiscount)))">
+                Nonna's Sunday Pie (<s>$27.99</s> $18.19)
+              </button>
+            </section>
+
+            <hr>
+
+            <section>
+              <h2>Sides</h2>
+              <button class="order-button" onclick="addToOrder('Breadsticks', 899)">
+                Breadsticks ($8.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Garlic Bread', 899)">
+                Garlic Bread ($8.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Caesar Salad', 999)">
+                Caesar Salad ($9.99)
+              </button>
+            </section>
+
+            <hr>
+
+            <section>
+              <h2>Drinks</h2>
+              <button class="order-button" onclick="addToOrder('Pepsi', 199)">
+                Pepsi ($1.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Coca-Cola', 199)">
+                Coca-Cola ($1.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Mountain Dew', 199)">
+                Mountain Dew ($1.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Espresso', 399)">
+                Espresso ($3.99)
+              </button>
+
+              <button class="order-button" onclick="addToOrder('Cappuccino', 499)">
+                Cappuccino ($4.99)
+              </button>
+            </section>
+          </main>
+        </div>
+        
+        <div class="order-section">
+          <div class="order-columns">
+            <div class="order-item order-contents" id="order-contents">
+              No contents! <br>
+            </div>
+            <div class="order-item order-money" id="order-money">
+              $0.00 <br>
+            </div>
+          </div>
+
+          <div style="background-color: black; height: 3px;"></div>
+
+          <div class="order-columns">
+            <div class="order-item order-contents">
+              Order <br>
+              Tax <br>
+            </div>
+            <div class="order-item order-money" id="total-and-tax-money">
+              $0.00 <br>
+              $0.00 <br>
+            </div>
+          </div>
+
+          <div style="background-color: black; height: 3px;"></div>
+
+          <div class="order-columns">
+            <div class="order-item order-contents">
+              Total <br>
+            </div>
+            <div class="order-item order-money" id="final-total-money">
+              $0.00 <br>
+            </div>
+          </div>
+
+        <section>
+          <button class="total-button order-button" onclick="
+              //All the numbers are in cents to avoid floating-point errors
+              taxTotal = Math.floor((orderTotal * taxRate) / 100);
+              finalTotal = orderTotal + taxTotal;
+
+              console.log(`Pizza and sides ordered, final total: $${finalTotal / 100}`)
+
+              alert(`Order: $${orderTotal / 100}\n` +
+                `Tax: $${taxTotal / 100}\n` +
+                `Total: $${finalTotal / 100}`
+              );
+            ">
+              Checkout
+          </button>
+
+          <button class="reset-button order-button" onclick="
+              orderTotal = 0;
+              taxTotal = 0;
+              finalTotal = 0;
+
+              document.getElementById('order-contents').innerHTML = 'No contents! <br>';
+              document.getElementById('order-money').innerHTML = `$0.00 <br>`;
+
+              document.getElementById('total-and-tax-money').innerHTML = `$0.00<br>$0.00`;
+              document.getElementById('final-total-money').innerHTML = `$0.00`;
+
+              alert('Order reset');
+
+              //If the reset somehow fails, this log might be important
+              console.log(`Order reset, total reverted to $${orderTotal}`)
+            ">
+              Reset Order
+          </button>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
