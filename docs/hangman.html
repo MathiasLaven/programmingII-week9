@@ -155,7 +155,7 @@
       let incorrectGuesses = 0;
 
       let hangmanProgress = hangmanTop + hangmanStages[incorrectGuesses] + hangmanBottom;
-      let userMessage = "Guess our secret word!";
+      let userMessage = `Guess our secret word! "${blankedWord.join(" ")}"`;
 
       let gameOver = false;
 
