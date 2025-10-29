@@ -74,7 +74,7 @@
 
       //Art by JGS, taken from https://www.asciiartcopy.com/hangman-ascii.html
       const hangmanTop =         "_______      <br>";
-      const hangmanUpperEmpty =  "|/"
+      const hangmanUpperEmpty =  "|/ <br>"
       const hangmanUpperRope =   "|/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |   <br>";
       const hangmanMiddleHead =  "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (_)  <br>";
       const hangmanMiddleArms =  "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \\|/ <br>";
@@ -149,15 +149,19 @@
       const correctWord = wordOptions[randomNumber].split("");
       const blankedWord = correctWord.map(item => "_");
 
-      console.log(`Correct word: ${correctWord.join()}`)
+      console.log(`Correct word: ${correctWord.join()}`);
 
       let previousGuesses = [];
       let incorrectGuesses = 0;
 
-      let hangmanProgress = "";
-      let userMessage = "";
+      let hangmanProgress = hangmanTop + hangmanStages[incorrectGuesses] + hangmanBottom;
+      let userMessage = "Guess our secret word!";
 
-      let gameOver = false
+      let gameOver = false;
+
+      console.log(hangmanProgress)
+
+      document.getElementById("hangman-text").innerHTML = hangmanProgress + userMessage;
 
       function guessLetter(letter) {
         if (gameOver) {
