@@ -27,8 +27,8 @@
 
     <section>
       <h1>Hangman</h1>
-      <p>
-        Guess our secret word!
+      <p id="hangman-text">
+        Guess our secret word! <br>
       </p>
     </section>
 
@@ -73,47 +73,48 @@
       //(Mostly the arrays and array methods)
 
       //Art by JGS, taken from https://www.asciiartcopy.com/hangman-ascii.html
-      const hangmanTop =         "_______    \n";
-      const hangmanMiddleRope =  "|/       |   \n";
-      const hangmanMiddleHead =  "|       (_)  \n";
-      const hangmanMiddleArms =  "|       \\|/ \n";
-      const hangmanMiddleTorso = "|        |   \n";
-      const hangmanMiddleLegs =  "|       / \\ \n";
-      const hangmanMiddleEmpty = "|          \n";
-      const hangmanBottom =      "|__        \n";
+      const hangmanTop =         "_______      <br>";
+      const hangmanUpperEmpty =  "|/"
+      const hangmanUpperRope =   "|/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |   <br>";
+      const hangmanMiddleHead =  "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (_)  <br>";
+      const hangmanMiddleArms =  "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \\|/ <br>";
+      const hangmanMiddleTorso = "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |   <br>";
+      const hangmanMiddleLegs =  "| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; / \\ <br>";
+      const hangmanMiddleEmpty = "|            <br>";
+      const hangmanBottom =      "|__          <br>";
                             
       const hangmanStages = [
-        hangmanMiddleEmpty +
-        hangmanMiddleEmpty +
-        hangmanMiddleEmpty +
-        hangmanMiddleEmpty +
-        hangmanMiddleEmpty,
-
-        hangmanMiddleRope +
+        hangmanUpperEmpty +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty,
 
-        hangmanMiddleRope +
+        hangmanUpperRope +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty,
+
+        hangmanUpperRope +
         hangmanMiddleHead +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty,
 
-        hangmanMiddleRope +
+        hangmanUpperRope +
         hangmanMiddleHead +
         hangmanMiddleArms +
         hangmanMiddleEmpty +
         hangmanMiddleEmpty,
 
-        hangmanMiddleRope +
+        hangmanUpperRope +
         hangmanMiddleHead +
         hangmanMiddleArms +
         hangmanMiddleTorso +
         hangmanMiddleEmpty,
 
-        hangmanMiddleRope +
+        hangmanUpperRope +
         hangmanMiddleHead +
         hangmanMiddleArms +
         hangmanMiddleTorso +
@@ -180,7 +181,7 @@
             userMessage = `${letter} was in the word: "${blankedWord.join(" ")}"`;
           } else {
             gameOver = true;
-            userMessage = `You have won! The correct word was "${correctWord.join("")}" \n` +
+            userMessage = `You have won! The correct word was "${correctWord.join("")}". ` +
                           `Refresh the page to play again!`;
           }
         } else {
@@ -190,7 +191,7 @@
             userMessage = `${letter} was not in the word: "${blankedWord.join(" ")}"`;
           } else {
             gameOver = true;
-            userMessage = `You have lost! The correct word was "${correctWord.join("")}" \n` +
+            userMessage = `You have lost! The correct word was "${correctWord.join("")}". ` +
                           `Refresh the page to play again!`;
           }
         }
@@ -198,7 +199,8 @@
         console.log(`User guessed ${letter}, current word status: ${blankedWord.join(" ")}`)
 
         hangmanProgress = hangmanTop + hangmanStages[incorrectGuesses] + hangmanBottom;
-        alert(hangmanProgress + userMessage);
+        //alert(hangmanProgress + userMessage);
+        document.getElementById("hangman-text").innerHTML = hangmanProgress + userMessage
       }
     </script>
   </body>
