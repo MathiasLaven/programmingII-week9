@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      .letter-button {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 2px;
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border-radius: 3px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: opacity 0.5s;
+      }
+      .letter-button:hover {
+        opacity: 0.8;
+      }
+      .letter-button:active {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+
+    <section>
+      <h1>Hangman</h1>
+      <p>
+        Guess our secret word!
+      </p>
+    </section>
+
+    <hr>
+
+    <main>
+      <button class="letter-button" onclick="guessLetter('A')">A</button>
+      <button class="letter-button" onclick="guessLetter('B')">B</button>
+      <button class="letter-button" onclick="guessLetter('C')">C</button>
+      <button class="letter-button" onclick="guessLetter('D')">D</button>
+      <button class="letter-button" onclick="guessLetter('E')">E</button>
+      <button class="letter-button" onclick="guessLetter('F')">F</button>
+      <button class="letter-button" onclick="guessLetter('G')">G</button>
+      <button class="letter-button" onclick="guessLetter('H')">H</button>
+      <button class="letter-button" onclick="guessLetter('I')">I</button>
+      <button class="letter-button" onclick="guessLetter('J')">J</button>
+      <button class="letter-button" onclick="guessLetter('K')">K</button>
+      <button class="letter-button" onclick="guessLetter('L')">L</button>
+      <button class="letter-button" onclick="guessLetter('M')">M</button>
+
+      <br>
+
+      <button class="letter-button" onclick="guessLetter('N')">N</button>
+      <button class="letter-button" onclick="guessLetter('O')">O</button>
+      <button class="letter-button" onclick="guessLetter('P')">P</button>
+      <button class="letter-button" onclick="guessLetter('Q')">Q</button>
+      <button class="letter-button" onclick="guessLetter('R')">R</button>
+      <button class="letter-button" onclick="guessLetter('S')">S</button>
+      <button class="letter-button" onclick="guessLetter('T')">T</button>
+      <button class="letter-button" onclick="guessLetter('U')">U</button>
+      <button class="letter-button" onclick="guessLetter('V')">V</button>
+      <button class="letter-button" onclick="guessLetter('W')">W</button>
+      <button class="letter-button" onclick="guessLetter('X')">X</button>
+      <button class="letter-button" onclick="guessLetter('Y')">Y</button>
+      <button class="letter-button" onclick="guessLetter('Z')">Z</button>
+    </main>
+
+    <!-- For when they open the page -->
+    <script>
+      //Trying to use mostly covered concepts here,
+      //but there are exceptions for neatness or functionality
+      //(Mostly the arrays and array methods)
+
+      //Art by JGS, taken from https://www.asciiartcopy.com/hangman-ascii.html
+      const hangmanTop =         "_______    \n";
+      const hangmanMiddleRope =  "|/       |   \n";
+      const hangmanMiddleHead =  "|       (_)  \n";
+      const hangmanMiddleArms =  "|       \\|/ \n";
+      const hangmanMiddleTorso = "|        |   \n";
+      const hangmanMiddleLegs =  "|       / \\ \n";
+      const hangmanMiddleEmpty = "|          \n";
+      const hangmanBottom =      "|__        \n";
+                            
+      const hangmanStages = [
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty,
+
+        hangmanMiddleRope +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty,
+
+        hangmanMiddleRope +
+        hangmanMiddleHead +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty,
+
+        hangmanMiddleRope +
+        hangmanMiddleHead +
+        hangmanMiddleArms +
+        hangmanMiddleEmpty +
+        hangmanMiddleEmpty,
+
+        hangmanMiddleRope +
+        hangmanMiddleHead +
+        hangmanMiddleArms +
+        hangmanMiddleTorso +
+        hangmanMiddleEmpty,
+
+        hangmanMiddleRope +
+        hangmanMiddleHead +
+        hangmanMiddleArms +
+        hangmanMiddleTorso +
+        hangmanMiddleLegs
+      ]
+
+      //Various necessary variables
+      const wordOptions = [
+        "PIZZA",
+        "PIZZERIA",
+        "NONNAROSA",
+        "ITALY",
+        "SICILY",
+        "DELICIOUS",
+        "HOMELY",
+        "FAMILY",
+        "WHOLESOME",
+        "CHEESE",
+        "CRUST",
+        "PEPPERONI",
+        "SAUSAGE",
+        "TOMATO",
+        "OLIVE",
+        "PEPPER",
+        "ONION",
+        "DOUGH",
+        "SUNDAY",
+        "FOODTRUCK"
+      ]
+
+      const randomNumber = Math.floor(Math.random() * wordOptions.length);
+      const correctWord = wordOptions[randomNumber].split("");
+      const blankedWord = correctWord.map(item => "_");
+
+      console.log(`Correct word: ${correctWord.join()}`)
+
+      let previousGuesses = [];
+      let incorrectGuesses = 0;
+
+      let hangmanProgress = "";
+      let userMessage = "";
+
+      let gameOver = false
+
+      function guessLetter(letter) {
+        if (gameOver) {
+          alert(`Sorry, the current game has ended! Refresh to play again with a new word.`);
+          return;
+        } else if (previousGuesses.includes(letter)) {
+          alert(`Whoops! You already guessed ${letter}, try something else.`);
+          return;
+        }
+
+        previousGuesses.push(letter);
+
+        if (correctWord.includes(letter)) {
+          correctWord.forEach((item, index) => {
+            if (item === letter) {
+              blankedWord[index] = letter;
+            }
+          })
+
+          if (blankedWord.includes("_")) {
+            userMessage = `${letter} was in the word: "${blankedWord.join(" ")}"`;
+          } else {
+            gameOver = true;
+            userMessage = `You have won! The correct word was "${correctWord.join("")}" \n` +
+                          `Refresh the page to play again!`;
+          }
+        } else {
+          incorrectGuesses++;
+
+          if (incorrectGuesses < 5) {
+            userMessage = `${letter} was not in the word: "${blankedWord.join(" ")}"`;
+          } else {
+            gameOver = true;
+            userMessage = `You have lost! The correct word was "${correctWord.join("")}" \n` +
+                          `Refresh the page to play again!`;
+          }
+        }
+
+        console.log(`User guessed ${letter}, current word status: ${blankedWord.join(" ")}`)
+
+        hangmanProgress = hangmanTop + hangmanStages[incorrectGuesses] + hangmanBottom;
+        alert(hangmanProgress + userMessage);
+      }
+    </script>
+  </body>
+</html>
